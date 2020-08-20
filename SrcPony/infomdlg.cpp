@@ -88,7 +88,7 @@ e24xx_infoModalDialog::e24xx_infoModalDialog(QWidget *bw, int rlv, uint16_t crc,
 
 e24xx_infoModalDialog::~e24xx_infoModalDialog()
 {
-	qDebug() << "infoModalDialog::~infoModalDialog()";
+	qDebug() << Q_FUNC_INFO;
 }
 
 
@@ -140,7 +140,7 @@ other_infoModalDialog::other_infoModalDialog(QWidget *bw, long fsize, long esize
 
 other_infoModalDialog::~other_infoModalDialog()
 {
-	qDebug() << "infoModalDialog::~infoModalDialog()";
+	qDebug() << Q_FUNC_INFO;
 }
 
 
@@ -164,7 +164,7 @@ notesModalDialog::notesModalDialog(QWidget *bw, QString &id, QString &cm, const 
 		setStyleSheet(cmdw->getStyleSheet());
 	}
 
-	qDebug() << "notesModalDialog::notesModalDialog()";
+	qDebug() << Q_FUNC_INFO;
 
 	id_ptr = &id;
 	cm_ptr = &cm;
@@ -190,7 +190,7 @@ notesModalDialog::notesModalDialog(QWidget *bw, QString &id, QString &cm, const 
 
 notesModalDialog::~notesModalDialog()
 {
-	qDebug() << "notesModalDialog::~notesModalDialog()";
+	qDebug() << Q_FUNC_INFO;
 }
 
 
@@ -220,7 +220,7 @@ editModalDialog::editModalDialog(QWidget *bw, int curval, const QString title) :
 		setStyleSheet(cmdw->getStyleSheet());
 	}
 
-	qDebug() << "editModalDialog::editModalDialog()";
+	qDebug() << Q_FUNC_INFO;
 
 	if (curval < 0)
 	{
@@ -257,7 +257,7 @@ editModalDialog::editModalDialog(QWidget *bw, int curval, const QString title) :
 
 editModalDialog::~editModalDialog()
 {
-	qDebug() << "editModalDialog::~editModalDialog()";
+	qDebug() << Q_FUNC_INFO;
 }
 
 
@@ -381,7 +381,7 @@ editModalDialog2::editModalDialog2(QWidget *bw, const QString curval, const QStr
 
 	lblVal->setText(translate(STR_MSGCHAR));
 
-	qDebug() << "editModalDialog::editModalDialog()";
+	qDebug() << Q_FUNC_INFO;
 
 	val = curval;
 
@@ -402,7 +402,7 @@ editModalDialog2::editModalDialog2(QWidget *bw, const QString curval, const QStr
 
 editModalDialog2::~editModalDialog2()
 {
-	qDebug() << "editModalDialog::~editModalDialog()";
+	qDebug() << Q_FUNC_INFO;
 }
 
 

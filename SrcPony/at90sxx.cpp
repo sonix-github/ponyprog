@@ -38,12 +38,12 @@
 At90sxx::At90sxx(e2AppWinInfo *wininfo, BusIO *busp)
 	:       Device(wininfo, busp, 1 /*BANK_SIZE*/)
 {
-	qDebug() << "At90sxx::At90sxx()";
+	qDebug() << Q_FUNC_INFO;
 }
 
 At90sxx::~At90sxx()
 {
-	qDebug() << "At90sxx::~At90sxx()";
+	qDebug() << Q_FUNC_INFO;
 }
 
 int At90sxx::SecurityRead(uint32_t &bits)
@@ -152,115 +152,10 @@ int At90sxx::FusesWrite(uint32_t bits)
  * 0x91         0x07            ATtiny28 (2K)
  **/
 
-typedef struct
+
+int At90sxx::QueryType(quint32 &type)
 {
-	int code1;
-	int code2;
-	int type;
-} IdType;
-
-static IdType IdArray[] =
-{
-	{0x90, 0x01,    AT90S1200},
-	{0x91, 0x01,    AT90S2313},
-	{0x92, 0x01,    AT90S4414},
-	{0x93, 0x01,    AT90S8515},
-
-	{0x96, 0x01,    ATmega603},
-	{0x97, 0x01,    ATmega103},
-	{0x06, 0x01,    ATmega603},
-	{0x01, 0x01,    ATmega103},
-
-	{0x91, 0x02,    AT90S2323},
-	{0x91, 0x03,    AT90S2343},
-
-	{0x92, 0x02,    AT90S4434},
-	{0x93, 0x03,    AT90S8535},
-
-	{0x91, 0x05,    AT90S2333},
-	{0x92, 0x03,    AT90S4433},
-
-	{0x93, 0x04,    AT90S8534},
-
-	{0x93, 0x07,    ATmega8},
-	{0x93, 0x06,    ATmega8515},
-	{0x93, 0x08,    ATmega8535},
-
-	{0x94, 0x01,    ATmega161},
-	{0x94, 0x02,    ATmega163},
-	{0x94, 0x03,    ATmega16},
-	{0x94, 0x04,    ATmega162},
-	{0x94, 0x05,    ATmega169},
-
-	{0x95, 0x01,    ATmega323},
-	{0x95, 0x02,    ATmega32},
-
-	{0x97, 0x02,    ATmega128},
-	{0x96, 0x02,    ATmega64},
-
-	{0x90, 0x03,    ATtiny10},              //only HV prog
-	{0x90, 0x04,    ATtiny11},              //only HV prog
-	{0x90, 0x05,    ATtiny12},
-	{0x90, 0x07,    ATtiny13},              //new (Paul 2005/03/24)
-	{0x90, 0x06,    ATtiny15},
-
-	{0x91, 0x06,    ATtiny22},
-	{0x91, 0x09,    ATtiny26},
-	{0x91, 0x07,    ATtiny28},              //only HV parallel prog
-
-	{0x91, 0x0A,    ATtiny2313},
-	{0x92, 0x0D,    ATtiny4313},    // new 16.09.2015 @RG
-
-	{0x91, 0x0B,    ATtiny24},      // new 08.01.2015 @RG
-	{0x92, 0x07,    ATtiny44},      // new 08.01.2015 @RG
-	{0x93, 0x0C,    ATtiny84},      // new 08.01.2015 @RG
-
-	{0x91, 0x08,    ATtiny25},
-	{0x92, 0x06,    ATtiny45},
-	{0x93, 0x0B,    ATtiny85},
-
-	{0x91, 0x0C,    ATtiny261},
-	{0x92, 0x08,    ATtiny461},
-	{0x93, 0x0D,    ATtiny861},
-
-	{0x92, 0x05,    ATmega48},      // ATmega48A
-	{0x92, 0x0A,    ATmega48},      // ATmega48PA
-	{0x93, 0x0A,    ATmega88},      // ATmega88A
-	{0x93, 0x0F,        ATmega88},      // ATmega88PA
-	{0x94, 0x06,    ATmega168},     // ATmega168A
-	{0x94, 0x0B,    ATmega168},     // ATmega168PA
-	{0x95, 0x14,    ATmega328},     // ATmega328
-	{0x95, 0x0F,    ATmega328},     // ATmega328P
-
-	{0x94, 0x0A,    ATmega164},
-	{0x94, 0x0F,    ATmega164},     // new ATmega164A (RG 30.08.2013)
-	{0x95, 0x08,    ATmega324},
-	{0x95, 0x15,    ATmega324},     // new ATmega324A (RG 30.08.2013)
-	{0x95, 0x11,    ATmega324},     // new ATmega324PA (RG 30.08.2013)
-	{0x96, 0x09,    ATmega644},
-	{0x96, 0x0A,    ATmega644},     // new ATmega644PA (RG 18.04.2012)
-
-	{0x95, 0x81,    AT90CAN32},
-	{0x96, 0x81,    AT90CAN64},
-	{0x97, 0x81,    AT90CAN128},
-
-	{0x96, 0x08,    ATmega640},
-	{0x97, 0x03,    ATmega1280},
-	{0x97, 0x04,    ATmega1281},
-	{0x97, 0x05,    ATmega1284},     // new ATmega1284P (RG 10.06.2017)
-	{0x98, 0x01,    ATmega2560},
-	{0x98, 0x02,    ATmega2561},
-
-	//      {0x51, 0x06,    AT89551},
-	//      {0x52, 0x06,    AT89552},
-	//      {0x91, 0x81,    AT86RF401},
-
-	{0x00, 0x00,    AT90S0000}
-};
-
-int At90sxx::QueryType(long &type)
-{
-	int rv;
+	int rv = DEVICE_UNKNOWN;
 
 	int code[3];
 
@@ -281,26 +176,28 @@ int At90sxx::QueryType(long &type)
 	}
 	else if (code[0] == 0x1E)
 	{
-		int k;
+// 		quint16 pri_type = AT90SXX; // ATtiny , ATmega
+		quint16 sign = (code[1] << 8) + code[2];
 
-		for (k = 0; IdArray[k].code1 != 0x00; k++)
+		foreach (groupElement g, GetAWInfo()->groupList)
 		{
-			if (IdArray[k].code1 == code[1] && IdArray[k].code2 == code[2])
+			if ((g.vId.indexOf(AT90SXX) == -1) && (g.vId.indexOf(ATtiny) == -1) && (g.vId.indexOf(ATmega) == -1))
 			{
-				type = IdArray[k].type;
-				break;
+				continue;
+			}
+
+			foreach (icElement i, g.vChip)
+			{
+				if (i.sign == sign)
+				{
+					type = i.id;
+					detected_type = type;
+					detected_signature.sprintf("%02X-%02X-%02X", code[0], code[1], code[2]);
+					rv = OK;
+					return rv;
+				}
 			}
 		}
-
-		if (type)
-		{
-			detected_type = type;
-		}
-
-		detected_signature.sprintf("%02X-%02X-%02X", code[0], code[1], code[2]);
-		//snprintf(detected_signature, MAXMSG, "%02X-%02X-%02X", code[0], code[1], code[2]);
-
-		rv = type ? OK : DEVICE_UNKNOWN;
 	}
 	else
 	{
@@ -334,13 +231,13 @@ int At90sxx::Probe(int probe_size)
 	}
 	else
 	{
-		long type;
+		quint32 type;
 		rv = QueryType(type);
-		int subtype = GetE2PSubType(type);
+		quint32 subtype = GetAWInfo()->GetE2PSubType(type);
 
 		if (rv == OK)
 		{
-			if (GetE2PSubType(GetAWInfo()->GetEEPId()) == subtype)
+			if (GetAWInfo()->GetE2PSubType(GetAWInfo()->GetEEPId()) == subtype)
 			{
 				rv = GetSize();
 			}
