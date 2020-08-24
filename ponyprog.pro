@@ -6,7 +6,7 @@
 
 QT  += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport multimedia
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport xml multimedia
 
 CONFIG += exceptions_off warn_on
 
@@ -26,7 +26,7 @@ APP_LOW_NAME                  = "ponyprog"
 APP_LOW_H_NAME                = ".ponyprog"
 APP_AUTHOR                    = "Claudio Lanconelli"
 APP_COPYRIGHT                 = "(C) 1997-2020 $$APP_AUTHOR"
-APP_VERSION                   = "3.1.1"
+APP_VERSION                   = "3.2.0"
 # APP_BUILD_DATE                = $$_DATE_
 APP_LONG_NAME                 = "$$APP_NAME $$APP_VERSION"
 APP_EMAIL                     = "PonyProg2000@gmail.com"
@@ -45,10 +45,10 @@ win32 {
 
 
 # TODO: please check this
-win32:INCLUDEPATH += $$PWD/windows 
+win32:INCLUDEPATH += $$PWD/windows
 win32:DEPENDPATH += $$PWD/windows
 
-win64:INCLUDEPATH += $$PWD/windows 
+win64:INCLUDEPATH += $$PWD/windows
 win64:DEPENDPATH += $$PWD/windows
 
 # TODO: please add this for macx
@@ -186,9 +186,9 @@ SOURCES  += SrcPony/aboutmdlg.cpp \
             qhexedit2/src/commands.cpp \
             qhexedit2/src/qhexedit.cpp
 
-HEADERS  += SrcPony/e2app.h \ 
+HEADERS  += SrcPony/e2app.h \
             SrcPony/e2awinfo.h \
-            SrcPony/e2cmdw.h \ 
+            SrcPony/e2cmdw.h \
             SrcPony/globals.h \
             SrcPony/device.h \
             SrcPony/microbus.h \
@@ -283,7 +283,7 @@ FORMS    += SrcPony/forms/aboutdlg.ui \
             SrcPony/forms/prefdialog.ui
 
 # for next version, when script for ts files convertion is implemented
-#TRANSLATIONS += localization/qtbase_cs.ts 
+#TRANSLATIONS += localization/qtbase_cs.ts
 
 # TODO: please check this
 #win32:LIBS += -L$$PWD/windows/
@@ -293,7 +293,7 @@ FORMS    += SrcPony/forms/aboutdlg.ui \
 # macx:LIBS +=
 
 # in case of manually installations, not from repositories
-unix:!macx: LIBS += -L/usr/local/lib 
+unix:!macx: LIBS += -L/usr/local/lib
 
 #libftdi
 unix:!macx: QMAKE_CXXFLAGS += $$system(pkg-config libftdipp1 --cflags)
@@ -313,7 +313,7 @@ win32: LIBS += -L $$FTDIPATH/lib32 -lftdipp1 -lftdi1 -lusb-1.0
 # # Create new "make lupdate" target.
 # lupdate.target = lupdate
 # lupdate.commands = lupdate $$shell_path($$PWD/rssguard.pro) -ts $$shell_path($$TRANSLATIONS_WO_QT)
-# 
+#
 # QMAKE_EXTRA_TARGETS += lupdate
 # QMAKE_EXTRA_COMPILERS += lrelease
 
@@ -337,7 +337,7 @@ QMAKE_CXXFLAGS += -Wno-unused-parameter
 
 unix: QMAKE_CXXFLAGS += -std=c++11
 
-# EK 2017 
+# EK 2017
 win32 {
     target.path = $$PWD/distribution/innosetup
 
@@ -346,6 +346,9 @@ win32 {
 
     lang.path = $$PWD/distribution/innosetup/lang
     lang.files = lang/*
+
+    xml.path = $$PWD/distribution/innosetup/ics
+    xml.files = ics/*
 
     inpoutdll.path = $$PWD/distribution/innosetup
     inpoutdll.files = InpOutLib/Win32/inpout32.dll
@@ -371,7 +374,7 @@ win32 {
 
     QMAKE_EXTRA_TARGETS += win32setup
 
-    INSTALLS += target lang inpoutexe inpoutdll ponydeploy
+    INSTALLS += target lang xml inpoutexe inpoutdll ponydeploy
     #QMAKE_POST_LINK = windeployqt --no-angle --no-opengl-sw --release --list relative ${TARGET}
 }
 
@@ -389,20 +392,26 @@ unix:!mac {
   translations.files = $$OUT_PWD/lang
   translations.path = $$quote($$PREFIX/share/$$TARGET/lang/)
 
+  xml.files = $$OUT_PWD/ics
+  xml.path = $$quote($$PREFIX/share/$$TARGET/ics/)
+
   INSTALLS += target misc_texts \
-              desktop_file translations
+              desktop_file translations xml
 }
 
 mac {
   CONFIG -= app_bundle
 
   target.path = $$quote($$PREFIX/Contents/MacOs/)
-  
+
   misc_texts.files = $$TEXTS
   misc_texts.path = $$quote($$PREFIX/Contents/Resources/information/)
 
   translations.files = $$OUT_PWD/lang
   translations.path =  $$quote($$PREFIX/Contents/Resources/lang/)
 
-  INSTALLS += target misc_texts translations
+  xml.files = $$OUT_PWD/ics
+  xml.path =  $$quote($$PREFIX/Contents/Resources/ics/)
+
+  INSTALLS += target misc_texts translations xml
 }
