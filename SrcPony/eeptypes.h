@@ -35,7 +35,7 @@
 
 #define EID_INVALID     0
 
-#define NO_OF_EEPTYPE   0x12
+// #define NO_OF_EEPTYPE   0x12
 
 
 // EK 2017
