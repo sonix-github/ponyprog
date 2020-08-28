@@ -348,6 +348,8 @@ class e2CmdWindow : public QMainWindow, public e2App, public Ui::MainWindow
 
 
   private:
+	QVector<menuToGroup> deviceMenu;
+
 	QString selectedLang;
 
 	QFont sysFont;
