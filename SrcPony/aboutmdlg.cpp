@@ -34,11 +34,6 @@
 #include "aboutmdlg.h"
 #include "e2profil.h"
 
-static const QString AUTHORWEB     = "http://www.LancOS.com";
-static const QString COPYRIGHTYEAR = "1997-2020";
-static const QString PORTERGQT     = "Eduard Kalinowski";
-static const QString PORTERMAIL    = "eduard_kalinowski@yahoo.de";
-
 
 AboutModalDialog::AboutModalDialog(QWidget *bw, const QString title)
 	: QDialog(bw)
@@ -56,11 +51,11 @@ AboutModalDialog::AboutModalDialog(QWidget *bw, const QString title)
 		setStyleSheet(cmdw->getStyleSheet());
 	}
 
-	lblAbout0->setText(APP_NAME " - " + translate(STR_APPNAME_EXT)  + "<br>" + translate(STR_MSGVERSION) + "  " APP_VERSION "  " __DATE__);
-	QString t = "Copyright (C) " + COPYRIGHTYEAR + "  by  <a href=\"" APP_EMAIL "\">" APP_AUTHOR "</a><br><br>" +
-				"Porting to Qt4/Qt5 by <a href=\"" + PORTERMAIL + "\">" + PORTERGQT + "</a><br><br>" +
-				translate(STR_APPDOWNLOAD1) + " " APP_NAME " " + translate(STR_APPDOWNLOAD2) + "<br>" +
-				"<a href=\"" + AUTHORWEB + "\">" + AUTHORWEB + "</a>";
+	lblAbout0->setText(APP_NAME " - " + translate(STR_APPNAME_EXT)  + "<br>" + translate(STR_MSGVERSION) + "  " APP_VERSION ", " __DATE__);
+	QString t = "Copyright (C) " + QString(COPYRIGHTYEAR) + "  by  <a href=\"" + QString(APP_EMAIL) + "\">" + QString(APP_AUTHOR) + "</a><br><br>" +
+				"Porting to Qt4/Qt5 by <a href=\"" + QString(PORTERMAIL) + "\">" + QString(PORTERGQT) + "</a><br><br>" +
+				translate(STR_APPDOWNLOAD1) + " " + QString(APP_NAME) + " " + translate(STR_APPDOWNLOAD2) + "<br>" +
+				"<a href=\"" + QString(AUTHORWEB) + "\">" + QString(AUTHORWEB) + "</a>";
 
 	if (translate(MSG_TRANSLATORNAME).length() > 0)
 	{
